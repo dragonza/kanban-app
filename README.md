@@ -1,7 +1,7 @@
 # react-boilerplate - Boilerplate for "SurviveJS - React"
 
 See [SurviveJS - React](http://survivejs.com/react/introduction/) for the book.
-
+This app used Redux to implement data flow
 ## Getting Started
 
 1. `npm i` - Install dependencies. This might take a while.
