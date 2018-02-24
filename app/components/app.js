@@ -4,38 +4,44 @@ import { bindActionCreators } from 'redux';
 import LaneList from './lane-list';
 import { laneListSelector } from '../selectors/select';
 import { createLane } from '../actions/lanes-actions';
+import PropTypes from 'prop-types';
 
 class App extends React.Component {
-  addLane = () => {
-    this.props.createLane({
-      name: 'New Lane'
-    });
-  }
+    addLane = () => {
+        this.props.createLane({
+            name: 'New Lane'
+        });
+    }
 
-  render() {
-    const { laneList } = this.props;
-    if (!laneList) return null;
-    return (
-      <div className='kanban-app'>
-        <button onClick={() => this.addLane()}>+</button>
-        <LaneList
-          laneList={laneList}
-          className='lane-list'
-        />
-      </div>
-    )
-  }
+    render() {
+        const {laneList} = this.props;
+        if (!laneList) return null;
+        return (
+            <div className='kanban-app'>
+                <button onClick={() => this.addLane()}>+</button>
+                <LaneList
+                    laneList={laneList}
+                    className='lane-list'
+                />
+            </div>
+        )
+    }
 }
 
 export default connect(
-  (state) => {
-    return {
-      laneList: laneListSelector(state)
+    (state) => {
+        return {
+            laneList: laneListSelector(state)
+        }
+    },
+    (dispatch) => {
+        return bindActionCreators({
+            createLane
+        }, dispatch);
     }
-  },
-  (dispatch) => {
-    return bindActionCreators({
-      createLane
-    }, dispatch);
-  },
 )(App)
+
+App.propTypes = {
+    laneList: PropTypes.array.isRequired,
+    createLane: PropTypes.func
+};

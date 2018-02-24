@@ -1,6 +1,14 @@
-node_modules/
 build/
 coverage/
 .eslintcache
 .npmrc
 .yarnrc
+
+
+# Node / NPM
+node_modules/
+npm-debug.log
+npm-debug.log.*
+
+# IntelliJ
+.idea/

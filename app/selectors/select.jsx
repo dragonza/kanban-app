@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect';
+import {createSelector} from 'reselect';
 
 export const noteListSelector = (state) => state.noteList;
 export const laneListSelector = (state) => state.laneList;
@@ -11,12 +11,12 @@ export const laneListSelector = (state) => state.laneList;
 //     .filter(Boolean);
 // }
 
-export const laneNotesbyLane = createSelector(
-  noteListSelector,
-  (state, props) => props.lane.notes, // notes by lane
-  (noteList, noteIdList) => {
-    return noteIdList
-      .map(noteId => noteList.find(note => note.id === noteId))
-      .filter(Boolean);
-  }
+export const notesByLane = createSelector(
+    noteListSelector,
+    (state, props) => props.lane.notes, // notes by lane
+    (noteList, noteIdList) => {
+        return noteIdList
+            .map(noteId => noteList.find(note => note.id === noteId))
+            .filter(Boolean);
+    }
 )

@@ -17,6 +17,52 @@
     "no-unused-vars": 0,
     "react/display-name": 0,
     "react/prop-types": 0,
-    "react/no-multi-comp": 0
+    "react/no-multi-comp": 0,
+    // overides indent to soft tabs equal to 4 spaces
+    "indent": [2, 4, { "SwitchCase": 1 }],
+    "react/jsx-indent-props": [2, 4],
+    "react/jsx-indent": [2, 4],
+    // overrides max length to 120
+    "max-len": [2, 120, 2, { "ignoreUrls": true, "ignoreComments": false }],
+    // use functions before declaration (useful when you want to put private functions below)
+    "no-use-before-define": ["error", { "functions": false, "classes": true }],
+    // allows fallthrough of switch case methods
+    "no-fallthrough": 0,
+    "arrow-body-style": ["off"],
+    "padded-blocks": 0,
+    "no-shadow": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    // allow the use of () around single argument arrow functions
+    "arrow-parens": 0,
+    // allow dynamic require like require(`some${path}`)
+    "import/no-dynamic-require": 0,
+    // allow use of Array,Any,Object propTypes
+    "react/forbid-prop-types": 0,
+    // allow use of ++ in loops
+    "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
+    // allow use of ' or " in html without using html entitites
+    "react/no-unescaped-entities": 0,
+    // allow importing dps w/o specifing them in package.json
+    "import/no-extraneous-dependencies": 0,
+    // allow imports w/o extenstions
+    "import/extensions": 0,
+    // disable forcing to have defaultProps for non-required props
+    "react/require-default-props": 0,
+    // disable warnings about index based components: key={i}
+    "react/no-array-index-key": 0,
+    // TODO: enable these
+    "import/no-unresolved": 0,
+    "import/no-mutable-exports": 0,
+    "import/prefer-default-export": 0,
+    "react/no-string-refs": 0,
+    "react/no-find-dom-node": 0,
+    "jsx-a11y/label-has-for": 0,
+    "no-prototype-builtins": 0,
+    "import/no-named-as-default": 0,
+    "linebreak-style": 0,
+    // this rule doesn't work very well
+    "react/no-unused-prop-types": 0,
+    // this rules allows mouse events on tags like DIV, SPAN
+    "jsx-a11y/no-static-element-interactions": 0
   }
 }
