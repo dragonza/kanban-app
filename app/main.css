@@ -17,7 +17,10 @@ button {
     cursor: pointer;
     background-color: #fdfdfd;
     border: 1px solid #ccc;
-    cursor: pointer;
+}
+
+input {
+    max-width: 15rem;
 }
 
 .kanban-app {
@@ -40,7 +43,6 @@ button {
 .lane-header {
     display: flex;
     padding: 1rem;
-    justify-content: space-between;
     color: #efefef;
     background-color: #333;
     align-items: center;
@@ -49,6 +51,7 @@ button {
 }
 
 .lane-header-item {
+    flex: 1;
 }
 
 .notes-list {
@@ -82,10 +85,10 @@ button {
 
 .value {
     text-overflow: ellipsis;
-    width: 15rem;
     overflow: hidden;
 }
 
 .lane-editable {
     margin: 0 .5rem;
+    flex: 10;
 }
