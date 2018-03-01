@@ -11,7 +11,8 @@ import {
     deleteLane,
     detachFromLane,
     attachToLane,
-    updateLane
+    updateLane,
+    moveNote
 } from '../actions/lanes-actions';
 import Notes from './note-list';
 import Editable from './editable';
@@ -67,6 +68,13 @@ class LaneItem extends React.Component {
         })
     }
 
+    handleMoveNote = (sourceId, targetId) => {
+        console.log('sourceId: ', sourceId);
+        this.props.moveNote({
+            sourceId,
+            targetId
+        });
+    }
 
     renderComponent = (props) => {
         const {laneNotes, lane} = props;
@@ -83,6 +91,7 @@ class LaneItem extends React.Component {
                     </button>
                 </div>
                 <Notes
+                    onMove={this.handleMoveNote}
                     notes={laneNotes}
                     onEditNote={(id, text) => this.handleEditNote(id, text)}
                     onDeleteNoteClick={(id) => this.handleDeleteNote(id, props)}
@@ -110,7 +119,8 @@ export default connect(
             deleteLane,
             detachFromLane,
             attachToLane,
-            updateLane
+            updateLane,
+            moveNote
         }, dispatch)
     }
 )(LaneItem);

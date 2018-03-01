@@ -5,7 +5,10 @@ import LaneList from './lane-list';
 import { laneListSelector } from '../selectors/select';
 import { createLane } from '../actions/lanes-actions';
 import PropTypes from 'prop-types';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
+@DragDropContext(HTML5Backend)
 class App extends React.Component {
     addLane = () => {
         this.props.createLane({

@@ -10,7 +10,8 @@ import {
     DELETE_LANE,
     DETACH_FROM_LANE,
     ATTACH_TO_LANE,
-    UPDATE_LANE
+    UPDATE_LANE,
+    MOVE_NOTE
 } from '../actions/lanes-actions';
 
 function noteList(state = initialState.noteList, action) {
@@ -78,6 +79,17 @@ function laneList(state = initialState.laneList, action) {
                 return lane;
             });
 
+
+        case MOVE_NOTE:
+            return state.map(lane => {
+                const sourceId = action.sourceId;
+                const targetId = action.targetId;
+                const sourceLane = state.find(lane => lane.notes.include(sourceId));
+                const targetLane = state.find(lane => lane.notes.include(targetId));
+                const sourceNoteIndex = sourceLane.indexOf(sourceId);
+                const targetNoteIndex = targetLane.indexOf(targetId);
+                return state;
+            })
 
         default:
             return state;

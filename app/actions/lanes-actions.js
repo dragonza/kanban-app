@@ -50,3 +50,12 @@ export function attachToLane({laneId = '', noteId = ''}) {
         noteId
     }
 }
+
+export const MOVE_NOTE = 'MOVE_NOTE';
+export function moveNote({ sourceId, targetId }) {
+    return {
+        type: MOVE_NOTE,
+        sourceId,
+        targetId
+    }
+}
