@@ -1,7 +1,7 @@
 import React from 'react';
 import NoteItem from './note-item';
 
-const Notes = ({notes, onDeleteNoteClick, onEditNote, onMove}) => {
+const Notes = ({notes, onDeleteNoteClick, onUpdateNote, onMove}) => {
     if (!notes) return null;
     return (
         <ul className="notes-list">
@@ -12,7 +12,7 @@ const Notes = ({notes, onDeleteNoteClick, onEditNote, onMove}) => {
                         note={note}
                         id={note.id}
                         onDeleteNoteClick={onDeleteNoteClick}
-                        onEditNote={onEditNote}
+                        onUpdateNote={onUpdateNote}
                         key={note.id}
                     />
                 )

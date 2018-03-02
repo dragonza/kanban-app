@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 export default class Editable extends React.Component {
     state = {
-        editing: false
+        text: this.props.value || ''
     }
 
     renderView = (props) => {
@@ -17,7 +17,7 @@ export default class Editable extends React.Component {
     }
 
     onDoubleClick = () => {
-        this.setState({editing: true})
+        this.props.onEdit({editing: true});
     }
 
     renderEditingView = (props, state) => {
@@ -26,22 +26,18 @@ export default class Editable extends React.Component {
             <InputText
                 editing={state.editing}
                 text={value}
-                onSave={(text) => this.handleSave(text)}
+                onEdit={props.onEdit}
+                onSave={(text) => this.props.onSave(text)}
             />
         )
-    }
-
-    handleSave = (text) => {
-        this.props.onEdit(text);
-        this.setState({editing: false});
     }
 
     renderComponent = (props, state) => {
         const { className } = this.props;
         const cls = classNames(className, {
             editable: true
-        })
-        const { editing } = this.state;
+        });
+        const { editing } = this.props;
         return (
             <div className={cls} title='Double click to edit'>
                 {editing ? this.renderEditingView(props, state) : this.renderView(props, state)}

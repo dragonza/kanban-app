@@ -1,5 +1,6 @@
 import initialState from '../store/default-state';
 import { combineReducers } from 'redux';
+import update from 'immutability-helper';
 import {
     CREATE_NOTE,
     UPDATE_NOTE,
@@ -57,6 +58,14 @@ function laneList(state = initialState.laneList, action) {
 
         case ATTACH_TO_LANE:
             return state.map(lane => {
+                const currentNoteIndex = lane.notes.indexOf(action.noteId);
+                if (currentNoteIndex >= 0) {
+                    return {
+                        ...lane,
+                        notes: lane.notes.filter(note => note !== action.noteId)
+                    }
+                }
+
                 if (lane.id === action.laneId) {
                     return {
                         ...lane,
@@ -81,15 +90,50 @@ function laneList(state = initialState.laneList, action) {
 
 
         case MOVE_NOTE:
-            return state.map(lane => {
+            {
                 const sourceId = action.sourceId;
                 const targetId = action.targetId;
-                const sourceLane = state.find(lane => lane.notes.include(sourceId));
-                const targetLane = state.find(lane => lane.notes.include(targetId));
-                const sourceNoteIndex = sourceLane.indexOf(sourceId);
-                const targetNoteIndex = targetLane.indexOf(targetId);
-                return state;
-            })
+                const sourceLane = state.find(lane => lane.notes.includes(sourceId));
+                const targetLane = state.find(lane => lane.notes.includes(targetId));
+                const sourceNoteIndex = sourceLane.notes.indexOf(sourceId);
+                const targetNoteIndex = targetLane.notes.indexOf(targetId);
+                if (targetLane.id === sourceLane.id) {
+                    return state.map(lane => {
+                        if (lane.id === sourceLane.id) {
+                            return Object.assign({}, lane, {
+                                notes: update(sourceLane.notes, {
+                                    $splice: [
+                                        [sourceNoteIndex, 1],
+                                        [targetNoteIndex, 0, sourceId]
+                                    ]
+                                })
+                            })
+                        }
+                        return lane;
+                    });
+                } else {
+                    return state.map(lane => {
+                        if (lane.id === sourceLane.id) {
+                            return {
+                                ...lane,
+                                notes: lane.notes.filter(note => note !== sourceId)
+                            }
+                        }
+
+                        if (lane.id === targetLane.id) {
+                            return {
+                                ...lane,
+                                notes: lane.notes
+                                    .slice(0, targetNoteIndex)
+                                    .concat([sourceId])
+                                    .concat(lane.notes.slice(targetNoteIndex))
+                            }
+                        }
+
+                        return lane;
+                    });
+                }
+            }
 
         default:
             return state;

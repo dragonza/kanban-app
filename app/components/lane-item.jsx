@@ -1,5 +1,5 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
+import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -16,10 +16,33 @@ import {
 } from '../actions/lanes-actions';
 import Notes from './note-list';
 import Editable from './editable';
+import { DropTarget } from 'react-dnd';
+import { ItemTypes } from '../constants/item-types';
 import { notesByLane } from '../selectors/select';
 
+const laneTarget = {
+    hover(props, monitor) {
+        const sourceProps = monitor.getItem();// note being dragged
+        if (!props.lane.notes.length) {
+            props.attachToLane({
+                laneId: props.lane.id,
+                noteId: sourceProps.id
+            });
+        }
+    }
+}
+
+function collectDrop(connect) {
+    return {
+        connectDropTarget: connect.dropTarget()
+    }
+}
 
 class LaneItem extends React.Component {
+    state = {
+        editing: false
+    }
+
     handleAddNote = (props) => {
         const {lane} = props;
         const newTask = props.createNote({
@@ -53,39 +76,46 @@ class LaneItem extends React.Component {
         props.deleteNote(noteId);
     }
 
-    handleEditNote = (id, text) => {
+    handleUpdateNote = (id, text) => {
         this.props.updateNote({
             id: id,
             task: text
         });
     }
 
-    handleEditLane = (text) => {
+    handleEditLane = (editing) => {
+        this.setState({ editing })
+    }
+
+    handleUpdateLane = (text) => {
         const {lane} = this.props;
         this.props.updateLane({
             laneId: lane.id,
             name: text
-        })
+        });
+        this.setState({ editing: false });
     }
 
-    handleMoveNote = (sourceId, targetId) => {
-        console.log('sourceId: ', sourceId);
+    handleMoveNote = ({ sourceId, targetId }) => {
         this.props.moveNote({
             sourceId,
             targetId
         });
     }
 
-    renderComponent = (props) => {
-        const {laneNotes, lane} = props;
-        return (
+    renderComponent = (props, state) => {
+        const { laneNotes, lane, connectDropTarget } = props;
+        return connectDropTarget(
             <li className='lane-item'>
                 <div className='lane-header'>
-                    <button className='add-note lane-header-item' onClick={() => this.handleAddNote(props)}>+</button>
+                    <button className='add-note lane-header-item'
+                        onClick={() => this.handleAddNote(props)}>+</button>
                     <Editable
                         className='lane-editable lane-header-item'
                         value={lane.name}
-                        onEdit={(text) => this.handleEditLane(text)}
+                        editing={state.editing}
+                        onSave={(text) => this.handleUpdateLane(text)}
+                        onEdit={(editing) => this.handleEditLane(editing)}
                     />
                     <button className='delete-lane lane-header-item' onClick={() => this.handleDeleteLane(props)}>x
                     </button>
@@ -93,11 +123,11 @@ class LaneItem extends React.Component {
                 <Notes
                     onMove={this.handleMoveNote}
                     notes={laneNotes}
-                    onEditNote={(id, text) => this.handleEditNote(id, text)}
+                    onUpdateNote={(id, text) => this.handleUpdateNote(id, text)}
                     onDeleteNoteClick={(id) => this.handleDeleteNote(id, props)}
                 />
             </li>
-        );
+        )
     }
 
     render() {
@@ -105,7 +135,7 @@ class LaneItem extends React.Component {
     }
 }
 
-export default connect(
+export default compose(connect(
     (state, props) => {
         return {
             laneNotes: notesByLane(state, props)
@@ -122,7 +152,8 @@ export default connect(
             updateLane,
             moveNote
         }, dispatch)
-    }
+    }),
+    DropTarget(ItemTypes.NOTE, laneTarget, collectDrop)
 )(LaneItem);
 
 LaneItem.propTypes = {

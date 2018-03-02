@@ -15,19 +15,17 @@ const noteSource = {
     },
 
     isDragging(props, monitor) {
-        //console.log('props: ', props);
         return props.id === monitor.getItem().id;
     }
 }
 
 const noteTarget = {
-    drop(props, monitor, component) {
+    drop(props, monitor) {
         const sourceProps = monitor.getItem(); // current item that is being dragged
-        const targetId = props.id;// props here is the props of target element that is being dragged to
+        const targetId = props.id;// props here is the props of target element that is being dragged on
         const sourceId = sourceProps.id;
 
         if (sourceId !== targetId) {
-            console.log('monitor: ', props, sourceProps);
             props.onMove({
                 sourceId,
                 targetId
@@ -51,21 +49,31 @@ function collectDrag(connect, monitor) {
 }
 
 class NoteItem extends React.Component {
-    handleEditNote = (text, props) => {
+    state = {
+        editing: false
+    }
+
+    handleEditNote = (editing) => {
+        this.setState({ editing });
+    }
+
+    handleSaveNote = (text, props) => {
         const {note} = this.props;
         if (text.length === 0) {
             props.onDeleteNoteClick(note.id);
         } else {
-            props.onEditNote(note.id, text);
+            props.onUpdateNote(note.id, text);
         }
+        this.setState({ editing: false });
     }
 
-    renderComponent = (props) => {
+    renderComponent = (props, state) => {
         const { connectDragSource, isDragging, connectDropTarget } = props;
         if (!props.note) return null;
         const {note} = props;
         console.log('isDragging: ', isDragging);
-        return connectDropTarget(connectDragSource(
+        const dragSource = state.editing ? a => a : connectDragSource;
+        return dragSource(connectDropTarget(
             <li className="note-item" style={{
                 opacity: isDragging ? 0.5 : 1,
                 cursor: 'move'
@@ -73,7 +81,9 @@ class NoteItem extends React.Component {
                 <Editable
                     className='note-editable'
                     value={note.task}
-                    onEdit={(text) => this.handleEditNote(text, props)}
+                    editing={state.editing}
+                    onEdit={(editing) => this.handleEditNote(editing)}
+                    onSave={(text) => this.handleSaveNote(text, props)}
                 />
                 <button onClick={() => props.onDeleteNoteClick(note.id)}>x</button>
             </li>

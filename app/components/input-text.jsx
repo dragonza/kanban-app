@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class NoteInputText extends React.Component {
+export default class InputText extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
