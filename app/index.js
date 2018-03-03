@@ -14,7 +14,7 @@ const store = createStore(
     kanbanApp,
     storage.get(APP_STORAGE) || {},
     process.env.NODE_ENV === 'production' ?
-        null : window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+        f => f : window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 store.subscribe(() => {
     if(!storage.get('debug')) {

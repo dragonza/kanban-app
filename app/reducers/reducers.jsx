@@ -79,7 +79,6 @@ function laneList(state = initialState.laneList, action) {
         case UPDATE_LANE:
             return state.map(lane => {
                 if (lane.id === action.laneId) {
-                    console.log(lane);
                     return {
                         ...lane,
                         name: action.name

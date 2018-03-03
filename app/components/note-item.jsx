@@ -7,8 +7,6 @@ import { ItemTypes } from '../constants/item-types';
 
 const noteSource = {
     beginDrag(props) {
-        console.log('begin dragging note', props);
-
         return {
             id: props.id
         }
@@ -71,7 +69,6 @@ class NoteItem extends React.Component {
         const { connectDragSource, isDragging, connectDropTarget } = props;
         if (!props.note) return null;
         const {note} = props;
-        console.log('isDragging: ', isDragging);
         const dragSource = state.editing ? a => a : connectDragSource;
         return dragSource(connectDropTarget(
             <li className="note-item" style={{
