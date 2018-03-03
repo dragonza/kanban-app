@@ -2,6 +2,9 @@
 
 See [SurviveJS - React](http://survivejs.com/react/introduction/) for the book.
 This app used Redux to implement data flow
+
+# See the demo: https://dragonza.github.io/kanban-app/
+
 ## Getting Started
 
 1. `npm i` - Install dependencies. This might take a while.
