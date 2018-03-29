@@ -26,8 +26,7 @@ export default class Editable extends React.Component {
             <InputText
                 editing={state.editing}
                 text={value}
-                onEdit={props.onEdit}
-                onSave={(text) => this.props.onSave(text)}
+                onSave={props.onSave}
             />
         )
     }
